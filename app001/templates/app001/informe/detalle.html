@@ -1,0 +1,19 @@
+{% extends "app001/layout.html" %} {% block body %}
+
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">Detalle del Informe</h3>
+    <h5 class="card-title">
+      Fecha: {{informe.fecha}} - Autor: {{informe.autor}} | Escuela:
+      {{informe.escuela}}
+    </h5>
+    <hr />
+    <p>{{informe.detalle}}</p>
+    <hr />
+    <a href="{% url 'app001:listar_informes' %}" class="btn btn-success"
+      >Volver</a
+    >
+  </div>
+</div>
+
+{% endblock %}

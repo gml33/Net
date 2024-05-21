@@ -1,0 +1,71 @@
+{% extends "app001/layout.html" %} {% block body %} {% load crispy_forms_tags %}
+{% if netbooks %}
+
+<script>
+  function eliminarNetbook(id) {
+    Swal.fire({
+      title: "Confirmar Operación",
+      text: "Esta acción no se puede deshacer",
+      icon: "question",
+      showCancelButton: true,
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        window.location.href = "/eliminar-netbook/" + id + "/";
+      }
+    });
+  }
+</script>
+
+<div class="card">
+  <card class="card-body text-center">
+    <h2>Listado de Netbooks</h2>
+    <table class="table table-striped table-hover table-responsive-sm">
+      <tr>        
+        <th>Escuela</th>
+        <th>Identificador</th>
+        <th>Estado</th>
+        <th>Opciones</th>
+      </tr>
+      {% for netbook in netbooks %}
+      <tr>   
+        <td>{{netbook.escuela.cuise}} - {{netbook.escuela.nombre}}</td>
+        <td>{{netbook.identificador}}</td>
+        <td>{{netbook.estado}}</td>
+        <td>
+          <a
+            href="{% url 'app001:detalle_netbook' netbook.id %}"
+            class="btn btn-success"
+          >Detalle</a>
+          {% if perms.app001.change_netbook %}
+          <a
+            href="{% url 'app001:modificar_netbook' netbook.id %}"
+            class="btn btn-primary"
+          >Editar</a>
+          {% endif %} {% if perms.app001.delete_netbook %}
+          <a
+            href="#"
+            class="btn btn-danger"
+            onclick="eliminarNetbook({{netbook.id}})"
+          >Eliminar</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </card>
+</div>
+
+{% else %}
+  <div class="card text-center">
+    <div class="card-title">
+      <h2>No hay Netbooks registradas</h2>
+    </div>
+    <div class="card-body">
+      <p>
+        Agregue una escuela primero y se crearán las netbooks por defecto.
+      </p>
+      <a class="btn btn-primary" href="{% url 'app001:agregar_escuela' %}">Agregar Escuela</a>
+    </div>
+    </div>
+  </div>
+{% endif %} {% endblock %}
